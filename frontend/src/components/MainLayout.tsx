@@ -2,6 +2,7 @@ import React, { useState, type ReactNode } from "react";
 import Sidebar from "./Sidebar";
 import { Toaster } from "sonner";
 import { PanelRight } from "lucide-react";
+import Footer from "../pages/Footer";
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -25,6 +26,8 @@ const MainLayout = ({ children }: MainLayoutProps) => {
           </button>
         )}
         {children}
+        <Footer />
+
       </div>
     </div>
   );

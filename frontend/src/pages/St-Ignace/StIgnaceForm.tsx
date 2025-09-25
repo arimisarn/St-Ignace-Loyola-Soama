@@ -488,14 +488,14 @@ const StIgnaceForm = () => {
 
               {/* FM / VM */}
               <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">FM / VM</h3>
+                <h3 className="text-lg font-semibold text-gray-800">Fikambanana Masina / Vaomieran'Asa</h3>
                 <div className="flex space-x-3">
                   <input
                     type="text"
                     value={newFmVm}
                     onChange={(e) => setNewFmVm(e.target.value)}
                     className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm hover:border-gray-300"
-                    placeholder="Ajouter un nouveau FM/VM"
+                    placeholder="Ajouter un nouveau FM/VA"
                   />
                   <button
                     type="button"

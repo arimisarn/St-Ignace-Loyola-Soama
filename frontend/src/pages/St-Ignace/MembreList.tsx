@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { Eye, Edit, Search } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Eye, Edit, Search, Plus } from "lucide-react";
 
 interface Membre {
   id: number;
@@ -35,6 +35,13 @@ const MembresList = () => {
       <div className="mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
         <div className="p-6 border-b border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
           <h1 className="text-2xl font-bold text-gray-900">Kristianina St Ignace de Loyola Soamanandrariny</h1>
+            <Link
+            to="/ajout-soama"
+            className="flex items-center justify-center bg-green-500 px-5 py-2 text-white rounded shadow hover:bg-green-400 transition-all duration-300"
+            >
+            <Plus className="h-4 w-4 mr-1" />
+            Ajouter
+            </Link>
           <div className="relative w-full md:w-64">
             <input
               type="text"

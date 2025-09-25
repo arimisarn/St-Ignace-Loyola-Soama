@@ -125,9 +125,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <footer className="text-center text-gray-500 text-sm mt-6">
-          &copy; 2025 Mon Dashboard. Tous droits réservés.
-        </footer>
+        
       </div>
     </div>
   );

@@ -20,17 +20,18 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Routes>
       <MainLayout>
         <Routes>
-          <Route path="/" element={<Navigate to="/login" replace />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/login" element={<LoginPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/ajout-soama" element={<StIgnaceForm />} />
           <Route path="/list-soama" element={<MembresList />} />
           <Route path="/membres/:id" element={<MembreDetail />} />
           <Route path="/membres/:id/edit" element={<StIgnaceEdit />} />
-
         </Routes>
       </MainLayout>
     </BrowserRouter>
