@@ -15,6 +15,10 @@ import StAugustinForm from "./pages/St-Augustin/StAugustinForm";
 import MembresListAug from "./pages/St-Augustin/MembreListAug";
 import MembreDetailAug from "./pages/St-Augustin/MembreDetailAug";
 import StAugustinEdit from "./pages/St-Augustin/StAugustinEdit";
+import StBaptisteForm from "./pages/St-Baptiste/StBaptisteForm";
+import MembresListBapt from "./pages/St-Baptiste/MembreListBapt";
+import MembreDetailBapt from "./pages/St-Baptiste/MembreDetailBapt";
+import StBaptisteEdit from "./pages/St-Baptiste/StBaptisteEdit";
 // Dashboard ou autres pages plus tard
 
 const root = ReactDOM.createRoot(
@@ -44,6 +48,12 @@ root.render(
           <Route path="/list-ambohimahitsy" element={<MembresListAug />} />
           <Route path="/membres-aug/:id" element={<MembreDetailAug />} />
           <Route path="/membres-aug/:id/edit" element={<StAugustinEdit />} />
+
+           {/* Ankadindramamy */}
+          <Route path="/ajout-ankadindramamy" element={<StBaptisteForm />} />
+          <Route path="/list-ankadindramamy" element={<MembresListBapt />} />
+          <Route path="/membres-bapt/:id" element={<MembreDetailBapt />} />
+          <Route path="/membres-bapt/:id/edit" element={<StBaptisteEdit />} />
         </Routes>
       </MainLayout>
     </BrowserRouter>

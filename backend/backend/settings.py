@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "accounts",
     "st_ignace",
     "st_augustin",
+    "st_baptiste",
 ]
 
 MIDDLEWARE = [

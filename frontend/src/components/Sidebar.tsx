@@ -60,8 +60,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
           />
           {isSidebarOpen && <span className="ml-3">P.Soamanandrariny</span>}
         </Link>
-        <a
-          href="#"
+        <Link
+          to="/list-ankadindramamy"
           className={`flex items-center rounded hover:bg-gray-200 transition group ${
             isSidebarOpen ? "py-2 px-3" : "justify-center py-2"
           }`}
@@ -69,7 +69,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
         >
           <Church size={24} className="text-gray-600 group-hover:text-gray-800" />
           {isSidebarOpen && <span className="ml-3">ZP Ankadindramamy</span>}
-        </a>
+        </Link>
         <a
           href="#"
           className={`flex items-center rounded hover:bg-gray-200 transition group ${
