@@ -7,4 +7,5 @@ urlpatterns = [
     path("st-ignace/", include("st_ignace.urls")),
     path("st-augustin/", include("st_augustin.urls")),
     path("st-baptiste/", include("st_baptiste.urls")),
+    path("st-trinite/", include("st_trinite.urls")),
 ]
