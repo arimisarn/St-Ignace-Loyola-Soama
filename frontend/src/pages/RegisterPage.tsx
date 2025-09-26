@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, User } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { toast } from "sonner";
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [nomEglise, setNomEglise] = useState("");
@@ -21,10 +21,10 @@ const RegisterPage = () => {
           password,
         }
       );
-      alert(res.data.message);
+      toast.success(res.data.message);
       navigate("/login");
     } catch (err: any) {
-      alert(
+      toast.error(
         err.response?.data
           ? JSON.stringify(err.response.data)
           : "Erreur serveur"

@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { Lock, User } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { toast } from "sonner";
 const LoginPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -16,10 +16,10 @@ const LoginPage = () => {
         username,
         password,
       });
-      alert(res.data.message);
+      toast.success(res.data.message);
       navigate("/dashboard");
     } catch (err: any) {
-      alert(err.response?.data ? JSON.stringify(err.response.data) : "Erreur serveur");
+      toast.error(err.response?.data ? JSON.stringify(err.response.data) : "Erreur serveur");
     }
   };
 

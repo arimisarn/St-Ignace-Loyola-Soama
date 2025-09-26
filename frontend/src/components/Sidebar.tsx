@@ -83,8 +83,8 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
           />
           {isSidebarOpen && <span className="ml-3">ZP Ankadrina</span>}
         </a>
-        <a
-          href="#"
+        <Link
+          to="/list-ambohimahitsy"
           className={`flex items-center rounded hover:bg-gray-200 transition group ${
             isSidebarOpen ? "py-2 px-3" : "justify-center py-2"
           }`}
@@ -95,7 +95,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }: SidebarProps) => {
             className="text-gray-600 group-hover:text-gray-800"
           />
           {isSidebarOpen && <span className="ml-3">ZP Ambohimahitsy</span>}
-        </a>
+        </Link>
       </nav>
     </div>
   );

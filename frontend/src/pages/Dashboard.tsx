@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Dashboard = () => {
   const [totalSoamanandrariny, setTotalSoamanandrariny] = useState<number>(0);
+  const [totalAmbohimahitsy, setTotalambohilahitsy] = useState<number>(0);
 
   useEffect(() => {
     const fetchTotal = async () => {
@@ -23,6 +24,23 @@ const Dashboard = () => {
     fetchTotal();
   }, []);
 
+  useEffect(() => {
+    const fetchTotal = async () => {
+      try {
+        const res = await axios.get(
+          "http://127.0.0.1:8000/st-augustin/api/membres/"
+        );
+        const membres = res.data;
+
+        setTotalambohilahitsy(membres.length);
+      } catch (err) {
+        console.error("Erreur lors de la récupération des membres :", err);
+      }
+    };
+
+    fetchTotal();
+  }, []);
+
   return (
     <div className="bg-gray-200 flex min-h-screen">
       <div className="flex-1 p-6">
@@ -31,7 +49,7 @@ const Dashboard = () => {
             <h2 className="text-xl font-semibold mb-2">
               Total Kristianina ZP + Paroasy
             </h2>
-            <p className="text-2xl font-bold">6700</p>
+            <p className="text-2xl font-bold"> {totalAmbohimahitsy + totalSoamanandrariny} </p>
           </div>
 
           <div className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white rounded-lg shadow p-6 transform hover:scale-105 transition-transform duration-300 hover:shadow-xl">
@@ -59,7 +77,7 @@ const Dashboard = () => {
             <h2 className="text-xl font-semibold mb-2">
               Total Kristianina ZP Ambohimahitsy
             </h2>
-            <p className="text-2xl font-bold">128</p>
+            <p className="text-2xl font-bold"> {totalAmbohimahitsy} </p>
           </div>
 
           <div className="bg-gradient-to-r from-pink-600 to-purple-700 text-white rounded-lg shadow p-6 transform hover:scale-105 transition-transform duration-300 hover:shadow-xl">
@@ -124,8 +142,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
-        
       </div>
     </div>
   );

@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from "react";
+import { toast } from "sonner";
 import axios from "axios";
 import {
   User,
   Calendar,
   MapPin,
-  Phone,
   Award,
   Users,
   Plus,
   X,
-  Check,
-  Building,
-  Church,
   Trash,
+  Church,
+  Building,
 } from "lucide-react";
 
 import { type MembreForm } from "../../interface/st-ignace";
-import { toast } from "sonner";
+import { useParams } from "react-router-dom";
 
-const StIgnaceForm = () => {
+interface StIgnaceFormProps {
+  id: string; // code du membre à éditer
+}
+
+const StIgnaceEdit: React.FC<StIgnaceFormProps> = () => {
+  const { id } = useParams<{ id: string }>();
+
   const [form, setForm] = useState<MembreForm>({
     code_kristianina: "",
     code_fianakaviana: "",
@@ -43,27 +48,16 @@ const StIgnaceForm = () => {
     fm_vm: [],
   });
 
-  const [nextCode, setNextCode] = useState<string>("LOY001");
   const [newAndraikitra, setNewAndraikitra] = useState<string>("");
   const [newFmVm, setNewFmVm] = useState<string>("");
 
-  // Génération automatique du code kristianina
+  // Charger les données du membre à éditer
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/st-ignace/api/membres/")
-      .then((res) => {
-        const membres = res.data;
-        const codes = membres.map((m: any) => m.code_kristianina);
-        const numbers = codes.map((c: string) =>
-          parseInt(c.replace("LOY", ""), 10)
-        );
-        const maxNumber = numbers.length ? Math.max(...numbers) : 0;
-        const newCode = `LOY${(maxNumber + 1).toString().padStart(3, "0")}`;
-        setNextCode(newCode);
-        setForm((f) => ({ ...f, code_kristianina: newCode }));
-      })
+      .get(`http://127.0.0.1:8000/st-augustin/api/membres/${id}/`)
+      .then((res) => setForm(res.data))
       .catch((err) => console.error(err));
-  }, []);
+  }, [id]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -107,52 +101,15 @@ const StIgnaceForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
-      const payload = {
-        ...form,
-        mariage_date: form.mariage_date || null,
-        batemy_date: form.batemy_date || null,
-        andraikitra: form.andraikitra.length ? form.andraikitra : [],
-        fm_vm: form.fm_vm.length ? form.fm_vm : [],
-      };
-
-      await axios.post("http://127.0.0.1:8000/st-ignace/api/membres/", payload);
-
-      toast.success("Membre ajouté avec succès !");
-
-      // Reset form sauf code kristianina
-      const nextNumber = parseInt(nextCode.slice(3)) + 1;
-      const newCode = `LOY${nextNumber.toString().padStart(3, "0")}`;
-      setNextCode(newCode);
-
-      setForm({
-        ...form,
-        code_kristianina: newCode,
-        code_fianakaviana: "",
-        code_fianakaviana_niaviana: "",
-        nom: "",
-        prenom: "",
-        date_naissance: "",
-        profession: "",
-        adresse: "",
-        voina_vahatra_tafika: "voina",
-        mariage_ok: false,
-        mariage_date: "",
-        batemy_ok: false,
-        batemy_date: "",
-        confesy_ok: false,
-        komnio_ok: false,
-        kofirmasion_ok: false,
-        filaharana_ok: false,
-        faritra: "",
-        apv: "",
-        andraikitra: [],
-        fm_vm: [],
-      });
+      await axios.put(
+        `http://127.0.0.1:8000/st-augustin/api/membres/${id}/`,
+        form
+      );
+      toast.success("Membre mis à jour avec succès !");
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de l'ajout du membre !");
+      toast.error("Erreur lors de la mise à jour du membre !");
     }
   };
 
@@ -164,15 +121,12 @@ const StIgnaceForm = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl mb-4 shadow-lg">
             <Church className="h-8 w-8 text-white" />
           </div>
-
-          <p className="text-lg text-gray-600">
-             Saint Ignace de Loyola Soamanandrariny
-          </p>
+          <p className="text-lg text-gray-600">Édition du membre</p>
         </div>
 
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
           <form onSubmit={handleSubmit} className="p-8 space-y-12">
-            {/* Section Identification */}
+            {/* Identification */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4 border-b border-gray-200">
                 <div className="flex items-center justify-center w-10 h-10 bg-indigo-100 rounded-xl">
@@ -182,7 +136,6 @@ const StIgnaceForm = () => {
                   Identification
                 </h2>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
@@ -225,7 +178,7 @@ const StIgnaceForm = () => {
               </div>
             </div>
 
-            {/* Section Informations personnelles */}
+            {/* Informations personnelles */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4 border-b border-gray-200">
                 <div className="flex items-center justify-center w-10 h-10 bg-emerald-100 rounded-xl">
@@ -235,11 +188,10 @@ const StIgnaceForm = () => {
                   Informations personnelles
                 </h2>
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700">
-                    Nom de famille
+                    Nom
                   </label>
                   <input
                     type="text"
@@ -324,8 +276,7 @@ const StIgnaceForm = () => {
               </div>
             </div>
 
-            {/* Section Sacrements */}
-            {/* Section Sacrements */}
+            {/* Sacrements & Engagements */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4 border-b border-gray-200">
                 <div className="flex items-center justify-center w-10 h-10 bg-amber-100 rounded-xl">
@@ -350,8 +301,6 @@ const StIgnaceForm = () => {
                       <label className="text-base font-medium text-gray-700">
                         {label}
                       </label>
-
-                      {/* Switch */}
                       <button
                         type="button"
                         onClick={() =>
@@ -380,7 +329,7 @@ const StIgnaceForm = () => {
                       <input
                         type="date"
                         name={`${key}_date`}
-                        value={(form as any)[`${key}_date`]}
+                        value={(form as any)[`${key}_date`] || ""}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm hover:border-gray-300"
                       />
@@ -390,7 +339,7 @@ const StIgnaceForm = () => {
               </div>
             </div>
 
-            {/* Section Localisation */}
+            {/* Localisation */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4 border-b border-gray-200">
                 <div className="flex items-center justify-center w-10 h-10 bg-green-100 rounded-xl">
@@ -429,7 +378,7 @@ const StIgnaceForm = () => {
               </div>
             </div>
 
-            {/* Section Responsabilités */}
+            {/* Responsabilités */}
             <div className="space-y-6">
               <div className="flex items-center space-x-3 pb-4 border-b border-gray-200">
                 <div className="flex items-center justify-center w-10 h-10 bg-purple-100 rounded-xl">
@@ -468,15 +417,13 @@ const StIgnaceForm = () => {
                       {form.andraikitra.map((item, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm"
+                          className="flex justify-between items-center px-3 py-2 bg-white rounded-xl shadow-sm"
                         >
-                          <span className="text-gray-700 font-medium">
-                            {item}
-                          </span>
+                          <span>{item}</span>
                           <button
                             type="button"
                             onClick={() => removeAndraikitra(index)}
-                            className="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded-lg transition-all"
+                            className="text-red-500 hover:text-red-700"
                           >
                             <Trash className="h-4 w-4" />
                           </button>
@@ -487,21 +434,21 @@ const StIgnaceForm = () => {
                 )}
               </div>
 
-              {/* FM / VM */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold text-gray-800">Fikambanana Masina / Vaomieran'Asa</h3>
+              {/* FM/VM */}
+              <div className="space-y-4 mt-4">
+                <h3 className="text-lg font-semibold text-gray-800">FM/VM</h3>
                 <div className="flex space-x-3">
                   <input
                     type="text"
                     value={newFmVm}
                     onChange={(e) => setNewFmVm(e.target.value)}
                     className="flex-1 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm hover:border-gray-300"
-                    placeholder="Ajouter un nouveau FM/VA"
+                    placeholder="Ajouter un FM/VM"
                   />
                   <button
                     type="button"
                     onClick={addFmVm}
-                    className="inline-flex items-center px-6 py-3 bg-emerald-600 text-white font-medium rounded-xl hover:bg-emerald-700 transition-all shadow-sm hover:shadow-md"
+                    className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-all shadow-sm hover:shadow-md"
                   >
                     <Plus className="h-4 w-4 mr-2" />
                     Ajouter
@@ -513,17 +460,15 @@ const StIgnaceForm = () => {
                       {form.fm_vm.map((item, index) => (
                         <div
                           key={index}
-                          className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm"
+                          className="flex justify-between items-center px-3 py-2 bg-white rounded-xl shadow-sm"
                         >
-                          <span className="text-gray-700 font-medium">
-                            {item}
-                          </span>
+                          <span>{item}</span>
                           <button
                             type="button"
                             onClick={() => removeFmVm(index)}
-                            className="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded-lg transition-all"
+                            className="text-red-500 hover:text-red-700"
                           >
-                            <X className="h-4 w-4" />
+                            <Trash className="h-4 w-4" />
                           </button>
                         </div>
                       ))}
@@ -533,14 +478,14 @@ const StIgnaceForm = () => {
               </div>
             </div>
 
-            {/* Submit Button */}
+            {/* Submit */}
             <div className="flex justify-center pt-6">
               <button
                 type="submit"
                 className="inline-flex items-center px-8 py-4 bg-indigo-600 text-white font-semibold text-lg rounded-2xl hover:bg-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
               >
                 <Users className="h-5 w-5 mr-3" />
-                Ajouter le membre
+                Mettre à jour le membre
               </button>
             </div>
           </form>
@@ -550,4 +495,4 @@ const StIgnaceForm = () => {
   );
 };
 
-export default StIgnaceForm;
+export default StIgnaceEdit;

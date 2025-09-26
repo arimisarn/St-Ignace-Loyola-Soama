@@ -43,22 +43,22 @@ const StIgnaceForm = () => {
     fm_vm: [],
   });
 
-  const [nextCode, setNextCode] = useState<string>("LOY001");
+  const [nextCode, setNextCode] = useState<string>("AUG001");
   const [newAndraikitra, setNewAndraikitra] = useState<string>("");
   const [newFmVm, setNewFmVm] = useState<string>("");
 
   // Génération automatique du code kristianina
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:8000/st-ignace/api/membres/")
+      .get("http://127.0.0.1:8000/st-augustin/api/membres/")
       .then((res) => {
         const membres = res.data;
         const codes = membres.map((m: any) => m.code_kristianina);
         const numbers = codes.map((c: string) =>
-          parseInt(c.replace("LOY", ""), 10)
+          parseInt(c.replace("AUG", ""), 10)
         );
         const maxNumber = numbers.length ? Math.max(...numbers) : 0;
-        const newCode = `LOY${(maxNumber + 1).toString().padStart(3, "0")}`;
+        const newCode = `AUG${(maxNumber + 1).toString().padStart(3, "0")}`;
         setNextCode(newCode);
         setForm((f) => ({ ...f, code_kristianina: newCode }));
       })
@@ -117,13 +117,13 @@ const StIgnaceForm = () => {
         fm_vm: form.fm_vm.length ? form.fm_vm : [],
       };
 
-      await axios.post("http://127.0.0.1:8000/st-ignace/api/membres/", payload);
+      await axios.post("http://127.0.0.1:8000/st-augustin/api/membres/", payload);
 
       toast.success("Membre ajouté avec succès !");
 
       // Reset form sauf code kristianina
       const nextNumber = parseInt(nextCode.slice(3)) + 1;
-      const newCode = `LOY${nextNumber.toString().padStart(3, "0")}`;
+      const newCode = `AUG${nextNumber.toString().padStart(3, "0")}`;
       setNextCode(newCode);
 
       setForm({
@@ -166,7 +166,7 @@ const StIgnaceForm = () => {
           </div>
 
           <p className="text-lg text-gray-600">
-             Saint Ignace de Loyola Soamanandrariny
+             Saint Augustin Soamanandrariny
           </p>
         </div>
 
